@@ -1,3 +1,4 @@
+import re
 from http import HTTPStatus
 
 from fastapi.testclient import TestClient
@@ -21,3 +22,10 @@ def test_root_should_return_ok_and_hello_world():
     # A: Assert
     assert response.status_code == HTTPStatus.OK
     assert response.json() == {'message': 'Hello, World!'}
+
+
+def test_favorite_team_html():
+    client = TestClient(app)
+    response = client.get('/favorite')
+    assert response.status_code == HTTPStatus.OK
+    assert re.search(r'Chelsea FC', response.text)
